@@ -6,10 +6,10 @@
 
 double HalleyRecursiveA(double guess);
 double HalleyRecursiveB(double guess);
-double HalleyRecursiveC(double guess);
+//double HalleyRecursiveC(double guess);
 
 //Group of iterative Halley prototypes
 
 double HalleyIterativeA(double guess);
 double HalleyIterativeB(double guess);
-double HalleyIterativeC(double guess);
+//double HalleyIterativeC(double guess);

@@ -2,7 +2,8 @@
 
 #include "Testfunctions.h"
 #include <iostream>
-#include <math.h>
+#include <cmath>
+#include "stdafx.h"
 
 using namespace std;
 
