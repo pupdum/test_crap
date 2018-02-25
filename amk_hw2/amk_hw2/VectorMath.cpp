@@ -5,7 +5,8 @@
 
 //these return double pointers to the first index. Will have to figure out the way to do the i/o later
 double* addArray(double a[], double b[],  int length) { //addition with arrays
-	double sum[] = { 0, 0, 0 }; //initialized to zero but max size. Will be returned
+	double* sum;
+	sum = (double*)calloc(length, sizeof(double));
 	for (int i = 0; i < length; i++) {
 		sum[i] = a[i] + b[i];
 	}
@@ -22,7 +23,8 @@ std::vector<double> addVector(std::vector<double> a, std::vector<double> b) { //
 }
 
 double* subArray(double a[], double b[],  int length) { //sub with arrays
-	double diffa[] = { 0, 0, 0 };
+	double* diffa;
+	diffa = (double*)calloc(length, sizeof(double));
 	for (int i = 0; i < length; i++) {
 		diffa[i] = a[i] - b[i];
 	}
@@ -62,7 +64,8 @@ double dotVector(std::vector<double> a, std::vector<double> b) { //dot prod with
 //last two return arrays so array pointer
 
 double* xArray(double a[], double b[], int length) {
-	double xpa[3] = { 0, 0, 0 };
+	double* xpa;
+	xpa = (double*)calloc(length, sizeof(double));
 	xpa[0] = a[1] * b[2] - a[2] * b[1];
 	xpa[1] = a[2] * b[0] - a[0] * b[2];
 	xpa[2] = a[0] * b[1] - a[1] * b[0];
