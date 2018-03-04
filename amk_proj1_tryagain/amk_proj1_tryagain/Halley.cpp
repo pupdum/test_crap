@@ -1,6 +1,4 @@
-/*Definitions for Halley functions as prototyped in Halley.h
-Author: August Koehler
-*/
+/*Definitions for Halley functions as prototyped in Halley.h*/
 
 #include "Halley.h"
 #include <iostream>
@@ -35,7 +33,7 @@ double HalleyRecursiveB(double guess) {
 }
 
 
-//double HalleyRecursiveC(double guess) {
+
 
 
 
@@ -69,4 +67,3 @@ double HalleyIterativeB(double guess) {
 	}
 }
 
-//double HalleyIterativeC(double guess) {

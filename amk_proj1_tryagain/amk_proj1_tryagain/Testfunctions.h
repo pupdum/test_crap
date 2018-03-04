@@ -1,7 +1,5 @@
 #pragma once
-/*This is the header for the testfunction prototypes
-Author: August Koehler
-*/
+/*This is the header for the testfunction prototypes*/
 
 double f1(double a);
 double f1_prime(double b);

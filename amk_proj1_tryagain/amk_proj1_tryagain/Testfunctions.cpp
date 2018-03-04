@@ -1,6 +1,4 @@
-/*This is the file containing testfunction definitions as prototyped in Testfunctions.h
-Author: August Koehler
-*/
+/*This is the file containing testfunction definitions as prototyped in Testfunctions.h*/
 
 #include <cmath>
 #include "Testfunctions.h"

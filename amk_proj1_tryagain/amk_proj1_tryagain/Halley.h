@@ -1,8 +1,5 @@
 #pragma once
-
-/*Contains function prototypes for Halley's method functions as defined in Halley.cpp
-Author: August Koehler
-*/
+/*Contains function prototypes for Halley's method functions as defined in Halley.cpp*/
 
 //Group of recursive Halley prototypes
 

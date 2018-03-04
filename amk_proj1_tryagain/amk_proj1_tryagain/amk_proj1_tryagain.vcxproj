@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{28B47E62-74C4-4410-80B3-99CB46EB168E}</ProjectGuid>
+    <ProjectGuid>{9F1B050F-9090-4667-B2FE-888819AD8D8A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>amkproj1</RootNamespace>
+    <RootNamespace>amkproj1tryagain</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -147,13 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Halley.h" />
+    <ClInclude Include="Halley.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Testfunctions.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="amk_proj1.cpp" />
+    <ClCompile Include="amk_proj1_tryagain.cpp" />
     <ClCompile Include="Halley.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -162,11 +162,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Testfunctions.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\include\cmath">
-      <FileType>CppHeader</FileType>
-    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
