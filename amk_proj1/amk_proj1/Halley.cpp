@@ -75,11 +75,10 @@ double HalleyIterativeB(double guess) {
 
 
 //Here are modified versions that are used for making the tables...
+static std::vector<double> heck;
+static int evil = 1;
 
-
-std::vector<double> hRA(double guess) {
-	static std::vector<double> heck(1, guess);
-	static int evil = 1;
+std::vector<double>* hRA(double guess) {
 	double suffering = ((2 * f1(guess)* f1_prime(guess)) / (2 * (pow(f1_prime(guess), 2) - f1(guess)* f1_dprime(guess)))); //The term that gets subtracted, separated to make code more legible
 	double x_n = guess - suffering; //Subtract that stuff from initial value
 	if ((guess - suffering >= 0.0001) || (guess - suffering <= -0.0001)) {
@@ -91,7 +90,8 @@ std::vector<double> hRA(double guess) {
 		}
 	}
 	else {
-		return heck;
+		return &heck;
+		
 	}
 	
 }
