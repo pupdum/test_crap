@@ -4,6 +4,7 @@ Author: August Koehler
 
 #include "Halley.h"
 #include <iostream>
+#include <vector>
 #include <cmath>
 #include "stdafx.h"
 #include "Testfunctions.h"
@@ -73,13 +74,26 @@ double HalleyIterativeB(double guess) {
 //double HalleyIterativeC(double guess) {
 
 
-//Here are modified versions that don't implement the recursion and iteration logic themselves, just returning the next approximation.
+//Here are modified versions that are used for making the tables...
 
 
-double HRA(double guess) {
+std::vector<double> hRA(double guess) {
+	static std::vector<double> heck(1, guess);
+	static int evil = 1;
 	double suffering = ((2 * f1(guess)* f1_prime(guess)) / (2 * (pow(f1_prime(guess), 2) - f1(guess)* f1_dprime(guess)))); //The term that gets subtracted, separated to make code more legible
 	double x_n = guess - suffering; //Subtract that stuff from initial value
-	return x_n;
+	if ((guess - suffering >= 0.0001) || (guess - suffering <= -0.0001)) {
+		while (evil < 100) {
+			heck.push_back(0);
+			heck.at(evil) = x_n;
+			evil++;
+			return hRA(x_n);
+		}
+	}
+	else {
+		return heck;
+	}
+	
 }
 
 double HRB(double guess) {
