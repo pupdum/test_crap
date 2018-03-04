@@ -15,3 +15,11 @@ double HalleyRecursiveB(double guess);
 double HalleyIterativeA(double guess);
 double HalleyIterativeB(double guess);
 //double HalleyIterativeC(double guess);
+
+//These functions are modified versions of those above to make it easier to return a table of this stuff...
+
+double HRA(double guess);
+double HRB(double guess);
+
+double HIA(double guess);
+double HIB(double guess);
