@@ -19,7 +19,7 @@ double HalleyIterativeB(double guess);
 //These functions are modified versions of those above to make it easier to return a table of this stuff...
 
 std::vector<double>* hRA(double guess);
-double HRB(double guess);
+std::vector<double>* hRB(double guess);
 
 double HIA(double guess);
 double HIB(double guess);

@@ -76,34 +76,71 @@ double HalleyIterativeB(double guess) {
 
 //Here are modified versions that are used for making the tables...
 static std::vector<double> heck(1);
-
+static std::vector<double> circle_1;
+static std::vector<double> circle_2;
 
 std::vector<double>* hRA(double guess) {
-	static int evil = 1;
-	heck.at(0) = guess;
+	static int evil = 0;
+	circle_2.resize(1, 0);
 	double suffering = ((2 * f1(guess)* f1_prime(guess)) / (2 * (pow(f1_prime(guess), 2) - f1(guess)* f1_dprime(guess)))); //The term that gets subtracted, separated to make code more legible
 	double x_n = guess - suffering; //Subtract that stuff from initial value
+	
 	if (( suffering >= 0.0001) || ( suffering <= -0.0001)) {
 		while (evil < 100) {
-			heck.push_back(0);
-			heck.at(evil) = x_n;
-			evil++;
-			return hRA(x_n);
+			if (evil == 0) {
+				heck.at(evil) = x_n;
+				evil++;
+				return hRA(x_n);
+			}
+			else {
+				heck.push_back(x_n);
+				evil++;
+				return hRA(x_n);
+			}
 		}
 	}
 	else {
-		return &heck;
+		evil = 0;
+		circle_1 = heck;
 		heck.resize(1, 0);
-		evil = 1;
+		return &circle_1;
 	}
-	
 }
 
-double HRB(double guess) {
-	double pain = ((2 * f2(guess)* f2_prime(guess)) / (2 * (pow(f2_prime(guess), 2) - f2(guess)* f2_dprime(guess)))); //Same as above except uses the second function
-	double x_n = guess - pain;
-	return x_n;
+std::vector<double>* hRB(double guess) {
+	static int fear = 0;
+	circle_1.resize(1, 0);
+	double temp_var = guess; //This makes it easier to change the value for the next step
+	double foo = ((2 * f2(temp_var)* f2_prime(temp_var)) / (2 * (pow(f2_prime(temp_var), 2) - f2(temp_var)* f2_dprime(temp_var))));
+	if ((foo >= 0.0001) || (foo <= -0.0001)) {
+		while (fear < 100) {
+			if (fear == 0) {
+				heck.at(fear) = foo;
+				fear++;
+				return hRB(foo);
+			}
+			else if (foo <= .05 && foo >= -.05) {
+				heck.push_back(0);
+				circle_2 = heck;
+				fear = 0;
+				heck.resize(1, 0);
+				return &circle_2;
+			}
+			else {
+				heck.push_back(foo);
+				fear++;
+				return hRB(foo);
+			}
+		}
+	}
+	else {
+		circle_2 = heck;
+		fear = 0;
+		heck.resize(1, 0);
+		return &circle_2;
+	}
 }
+
 
 double HIA(double guess) {
 	double temp_var = guess; //This makes it easier to change the value for the next step
@@ -111,9 +148,10 @@ double HIA(double guess) {
 	return guess - foo;
 }
 
-
 double HIB(double guess) {
-	double temp_var = guess; //This makes it easier to change the value for the next step
-	double foo = ((2 * f2(temp_var)* f2_prime(temp_var)) / (2 * (pow(f2_prime(temp_var), 2) - f2(temp_var)* f2_dprime(temp_var))));
-	return guess - foo;
+	double pain = ((2 * f2(guess)* f2_prime(guess)) / (2 * (pow(f2_prime(guess), 2) - f2(guess)* f2_dprime(guess)))); //Same as above except uses the second function
+	double x_n = guess - pain;
+	return x_n;
 }
+
+
