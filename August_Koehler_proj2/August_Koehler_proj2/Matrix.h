@@ -1,0 +1,78 @@
+#pragma once
+//Author: August Koehler
+#include <iostream>
+#include <iomanip>
+
+using std::cout;
+using std::cin;
+using std::endl;
+using std::ostream;
+using std::istream;
+
+class Matrix
+{
+	
+	//Input the array values
+	friend istream &operator>>(istream &input, const Matrix &obj);
+
+	//Outputs to terminal a pretty little matrix
+	friend ostream &operator<<(ostream &output, const Matrix &obj);
+
+	
+	
+
+private:
+	int rows;
+	int cols;
+	double** data;
+
+
+public:
+	//Normal constructor
+	Matrix(int, int);
+
+	/*Copy constructor
+		obj_a is passed object
+	*/
+	Matrix(const Matrix & obj_a);
+
+	//deconstructor!!
+	~Matrix();
+
+	//Copy operator assignment
+	Matrix &operator=(const Matrix& obj_b);
+
+
+	//Adds the two matrices
+	Matrix &operator+(const Matrix& obj_b);
+
+	//subtracts the two matrices
+	Matrix &operator-(const Matrix& obj_b);
+
+	//Adds obj_b to THIS matrix
+	Matrix &operator+=(const Matrix& obj_b);
+
+	//subtracts obj_b from THIS matrix
+	Matrix &operator-=(const Matrix& obj_b);
+
+
+	//Matrix multiplication
+	Matrix &operator*(const Matrix& obj_b);
+
+	//preincrement
+	Matrix &operator++();
+
+	//postincrement
+	Matrix &operator++(int);
+
+	Matrix &operator--();
+
+	Matrix &operator--(int);
+
+
+	bool assert_dimensions(const Matrix&);
+
+	bool assert_mult(const Matrix&);
+
+};
+
