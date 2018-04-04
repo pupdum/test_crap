@@ -56,30 +56,38 @@ istream & operator>>(istream & input, const Matrix &obj)
 
 ostream & operator<<(ostream & output, const Matrix & obj)
 {
-	output << std::setw(10);
-
 	for (int x = 0; x < obj.rows; x++) {
 		for (int y = 0; y < obj.cols; y++) {
-			output << " " << obj.data[x][y];
+			output << std::setw(10) << obj.data[x][y];
 		}
-		if (x > 0) {
-			output << endl;
-		}
+		output << endl;
 	}
 	return output;
 }
 
 //Copy operator - sets the thing equal to the other thing
-Matrix & Matrix::operator=(const Matrix & obj_b) //current issues - won't return a value
-{
-	this->rows = obj_b.rows;
-	this->cols = obj_b.cols;
+const Matrix & Matrix::operator=(const Matrix & obj_b)//current issues - won't return a value
+{	
+	if (this == &obj_b)
+		return *this;
 
-	//Matrix copy_mat(this->rows, this->cols);
+	if ((this->rows != obj_b.rows) || (this->cols != obj_b.cols)) { //if they aren't same size, re-allocate the durned matrix
+		delete[] this->data[0];
+		delete[] this->data;
 
-	for (int x = 0; x < this->rows; x++) {
-		for (int y = 0; y < this->cols; y++)
-			this->data[x][y] = obj_b.getData()[x][y];   // it is going crazy here!
+		this->rows = obj_b.rows;
+		this->cols = obj_b.cols;
+		//creates a new thingy for this->data
+		this->data = new double*[this->rows]; //This code shamefully taken from stack overflow because I am not exactly sure how to do crazy dynamic allocation like this
+		this->data[0] = new double[this->rows * this->cols]; //makes the first index of data a ptr to the height * width I'm not exactly sure
+		for (int i = 1; i < this->rows; i++)
+			this->data[i] = this->data[i - 1] + this->cols; //does a heckin sorcery
+	}
+
+	//initializes the new data to be the same as obj_b
+	for (int x = 0; x < obj_b.rows; x++) {
+		for (int y = 0; y < obj_b.cols; y++)
+			this->data[x][y] = obj_b.data[x][y];   // it is going crazy here!
 	}
 	
 	return *this;
@@ -96,7 +104,8 @@ Matrix & Matrix::operator+(const Matrix & obj_b)
 			for (int y = 0; y < this->cols; y++)
 				temp_mat.data[x][y] += obj_b.data[x][y];
 		}
-		return temp_mat;
+		*this = temp_mat;
+		return *this;
 	}
 	else {
 		std::cerr << "Error: " << dims_error << endl;
@@ -108,13 +117,15 @@ Matrix & Matrix::operator-(const Matrix & obj_b)
 {
 	Matrix temp_mat = *this;
 	char dims_error[] = "Operand matrices do not have correct dimensions for operation to succeed. Please try again with equal dimensions. Thank you.";
+
 	if (this->assert_dimensions(obj_b)) {
 
 		for (int x = 0; x < this->rows; x++) {
 			for (int y = 0; y < this->cols; y++)
 				temp_mat.data[x][y] -= obj_b.data[x][y];
 		}
-		return temp_mat;
+		*this = temp_mat;
+		return *this;
 	}
 	else {
 		std::cerr << "Error: " << dims_error << endl;
@@ -124,15 +135,17 @@ Matrix & Matrix::operator-(const Matrix & obj_b)
 
 Matrix & Matrix::operator+=(const Matrix & obj_b)
 {
+
 	char dims_error[] = "Operand matrices do not have correct dimensions for operation to succeed. Please try again with equal dimensions. Thank you.";
 	if (this->assert_dimensions(obj_b)) {
 		Matrix temp_mat = *this;
+
 		for (int x = 0; x < this->rows; x++) {
 			for (int y = 0; y < this->cols; y++)
 				temp_mat.data[x][y] += obj_b.data[x][y];
 		}
-
-		return temp_mat;
+		*this = temp_mat;
+		return *this;
 	}
 	else {
 		std::cerr << "Error: " << dims_error << endl;
@@ -149,6 +162,7 @@ Matrix & Matrix::operator-=(const Matrix & obj_b)
 			for (int y = 0; y < this->cols; y++)
 				this->data[x][y] -= obj_b.data[x][y];
 		}
+		return *this;
 	}
 	else {
 		std::cerr << "Error: " << dims_error << endl;
@@ -175,8 +189,8 @@ Matrix & Matrix::operator*(const Matrix &obj_b)
 			}
 		}
 
-
-		return result_mat;
+		*this = result_mat;
+		return *this;
 	}
 	else {
 		char mult_error[] = "Operand matrices do not have correct dimensions for operation to succeed. Please try again with A.cols == B.rows. Thank you.";
@@ -198,7 +212,7 @@ Matrix & Matrix::operator++()
 }
 
 //post increment. Returns by value - temp object with old value then returns copy of original. rvalue.
-Matrix & Matrix::operator++(int)
+Matrix &Matrix::operator++(int)
 {
 	Matrix temp_mat = *this;
 	
@@ -206,8 +220,8 @@ Matrix & Matrix::operator++(int)
 		for (int y = 0; y < this->cols; y++)
 			temp_mat.data[x][y] += 1;
 	}
-
-	return temp_mat;
+	*this = temp_mat;
+	return *this;
 }
 
 //predecrement
@@ -230,8 +244,8 @@ Matrix & Matrix::operator--(int)
 		for (int y = 0; y < this->cols; y++)
 			temp_mat.data[x][y] -= 1;
 	}
-
-	return temp_mat;
+	*this = temp_mat;
+	return *this;
 }
 
 //asserts that both dimensions are identical for operations that require it
@@ -250,4 +264,96 @@ bool Matrix::assert_mult(const Matrix &other) {
 
 	else
 		return 0;
+}
+
+//a getter function even tho not really necessary...
+double ** Matrix::getData() const
+{
+	return data;
+}
+
+//a function to test ALL possible operations for the given matrices!
+void test_all(const Matrix &a, const Matrix &b)
+{
+	for (int i = 1; i <= 16; i++) {
+		Matrix tmpa = Matrix(a);
+		Matrix tmpb = Matrix(b);
+
+
+		switch (i) {
+		case 1: //additions
+			cout << i << "\n\n" << (tmpa + tmpb);
+			break;
+
+		case 2:
+			tmpa += tmpb;
+			cout << i << "\n\n" << tmpa;
+			break;
+
+		case 3: //subtractions
+			cout << i << "\n\n" << (tmpa - tmpb);
+			break;
+
+		case 4:
+			tmpa -= tmpb;
+			cout << i << "\n\n" << tmpa;
+			break;
+
+		case 5:
+			cout << i << "\n\n" << (tmpb - tmpa);
+			break;
+
+		case 6:
+			tmpb -= tmpa;
+			cout << i << "\n\n" << tmpb;
+			break;
+
+		case 7: //multiplications!
+			cout << i << "\n\n" << (tmpa * tmpb);
+			break;
+
+		case 8:
+			cout << i << "\n\n" << (tmpb * tmpa);
+			break;
+
+		case 9: //preincr
+			cout << i << "\n\n" << ++tmpa;
+			break;
+
+		case 10: //postincr
+			cout << i << "\n\n" << tmpa++;
+			break;
+
+		case 11: //preinc
+			cout << i << "\n\n" << ++tmpb;
+			break;
+
+		case 12: //postinc
+			cout << i << "\n\n" << tmpb++;
+			break;
+
+		case 13: //predec
+			cout << i << "\n\n" << --tmpa;
+			break;
+
+		case 14: //postdec
+			cout << i << "\n\n" << tmpa--;
+			break;
+
+		case 15:
+			cout << i << "\n\n" << --tmpb;
+			break;
+
+		case 16:
+			cout << i << "\n\n" << tmpb--;
+			break;
+
+		default:
+			cout << "invalid input, please start again...";
+			break;
+		}
+
+		cout << "\n\n" << endl;
+	}
+
 }

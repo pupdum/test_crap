@@ -40,7 +40,7 @@ public:
 	~Matrix();
 
 	//Copy operator assignment
-	Matrix &operator=(const Matrix& obj_b);
+	const Matrix &operator=(const Matrix& obj_b);
 
 
 	//Adds the two matrices
@@ -79,9 +79,10 @@ public:
 	//They are used in the overloaded >> operator declaration.
 
 	//self explanatory
-	double** getData() const {
-		return data;
-	}
+	double** getData() const;
 
 };
+
+
+void test_all(const Matrix&, const Matrix&);
 
