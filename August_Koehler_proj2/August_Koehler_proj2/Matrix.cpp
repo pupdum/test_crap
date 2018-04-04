@@ -43,11 +43,11 @@ Matrix::Matrix(const Matrix & obj_a) {
 	}
 }
 
-istream & operator>>(istream & input, const Matrix & obj)
+istream & operator>>(istream & input, const Matrix &obj)
 {
 	for (int x = 0; x < obj.rows; x++) {
 		for (int y = 0; y < obj.cols; y++) {
-
+			input >> obj.getData()[x][y];
 		}
 	}
 	
@@ -62,21 +62,27 @@ ostream & operator<<(ostream & output, const Matrix & obj)
 		for (int y = 0; y < obj.cols; y++) {
 			output << " " << obj.data[x][y];
 		}
-		output << endl;
+		if (x > 0) {
+			output << endl;
+		}
 	}
 	return output;
 }
 
 //Copy operator - sets the thing equal to the other thing
-Matrix & Matrix::operator=(const Matrix & obj_b)
+Matrix & Matrix::operator=(const Matrix & obj_b) //current issues - won't return a value
 {
 	this->rows = obj_b.rows;
 	this->cols = obj_b.cols;
 
+	//Matrix copy_mat(this->rows, this->cols);
+
 	for (int x = 0; x < this->rows; x++) {
 		for (int y = 0; y < this->cols; y++)
-			this->data[x][y] = obj_b.data[x][y];
+			this->data[x][y] = obj_b.getData()[x][y];   // it is going crazy here!
 	}
+	
+	return *this;
 }
 
 
@@ -120,11 +126,13 @@ Matrix & Matrix::operator+=(const Matrix & obj_b)
 {
 	char dims_error[] = "Operand matrices do not have correct dimensions for operation to succeed. Please try again with equal dimensions. Thank you.";
 	if (this->assert_dimensions(obj_b)) {
-
+		Matrix temp_mat = *this;
 		for (int x = 0; x < this->rows; x++) {
 			for (int y = 0; y < this->cols; y++)
-				this->data[x][y] += obj_b.data[x][y];
+				temp_mat.data[x][y] += obj_b.data[x][y];
 		}
+
+		return temp_mat;
 	}
 	else {
 		std::cerr << "Error: " << dims_error << endl;
@@ -148,10 +156,12 @@ Matrix & Matrix::operator-=(const Matrix & obj_b)
 	}
 }
 
-Matrix & Matrix::operator*(const Matrix & obj_b)
+Matrix & Matrix::operator*(const Matrix &obj_b)
 {
 	double temp_var = 0;
-	if (assert_mult) {
+	bool what = 0;
+	what = this->assert_mult(obj_b);
+	if ( what ) {
 		Matrix result_mat(this->rows, obj_b.cols);
 
 		for (int x = 0; x < this->rows; x++) { //fills in the resultant matrix
@@ -184,6 +194,7 @@ Matrix & Matrix::operator++()
 		for (int y = 0; y < this->cols; y++)
 			this->data[x][y] += 1;
 	}
+	return *this;
 }
 
 //post increment. Returns by value - temp object with old value then returns copy of original. rvalue.
@@ -206,6 +217,7 @@ Matrix & Matrix::operator--()
 		for (int y = 0; y < this->cols; y++)
 			this->data[x][y] -= 1;
 	}
+	return *this;
 }
 
 

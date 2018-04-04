@@ -65,14 +65,23 @@ public:
 	//postincrement
 	Matrix &operator++(int);
 
+	//predecrement
 	Matrix &operator--();
-
+	//postdecrement
 	Matrix &operator--(int);
 
-
+	//asserts whether the matrices have same size
 	bool assert_dimensions(const Matrix&);
-
+	//asserts proper dimensions for multiplication!
 	bool assert_mult(const Matrix&);
+
+	//The following function was suggested to me by my friend in CS who knows more of the arcana and suchforth of the c++ than I do.
+	//They are used in the overloaded >> operator declaration.
+
+	//self explanatory
+	double** getData() const {
+		return data;
+	}
 
 };
 
